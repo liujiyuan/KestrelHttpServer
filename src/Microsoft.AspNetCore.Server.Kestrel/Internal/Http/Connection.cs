@@ -144,6 +144,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
         public virtual void OnSocketClosed()
         {
             _socket.Dispose();
+            Log.ConnectionStop(ConnectionId);
 
             if (_filteredStreamAdapter != null)
             {

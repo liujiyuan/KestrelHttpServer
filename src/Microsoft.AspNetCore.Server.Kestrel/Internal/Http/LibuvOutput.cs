@@ -117,10 +117,6 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
                 {
                     Log.ConnectionError(ConnectionId, ex);
                 }
-
-                Socket.Dispose();
-
-                Log.ConnectionStop(ConnectionId);
             }
         }
 
