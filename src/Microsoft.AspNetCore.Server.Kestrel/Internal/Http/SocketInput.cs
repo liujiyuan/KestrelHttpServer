@@ -51,10 +51,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
             return _tcs.Task.Status == TaskStatus.RanToCompletion;
         }
 
-        public MemoryPoolBlock IncomingStart()
+        public MemoryPoolBlock IncomingStart(int minimumSize = 0)
         {
-            const int minimumSize = 2048;
-
             if (_tail != null && minimumSize <= _tail.Data.Offset + _tail.Data.Count - _tail.End)
             {
                 _pinned = _tail;

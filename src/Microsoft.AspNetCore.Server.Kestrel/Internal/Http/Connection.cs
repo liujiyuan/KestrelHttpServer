@@ -143,6 +143,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
         // Called on Libuv thread
         public virtual void OnSocketClosed()
         {
+            _socket.Dispose();
+
             if (_filteredStreamAdapter != null)
             {
                 _filteredStreamAdapter.Abort();
@@ -190,7 +192,9 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
 
         private Libuv.uv_buf_t OnAlloc(UvStreamHandle handle, int suggestedSize)
         {
-            var result = SocketInput.IncomingStart();
+            const int minimumSize = 2048;
+
+            var result = SocketInput.IncomingStart(minimumSize);
 
             return handle.Libuv.buf_init(
                 result.DataArrayPtr + result.End,
