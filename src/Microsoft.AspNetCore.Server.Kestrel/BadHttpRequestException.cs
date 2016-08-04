@@ -98,7 +98,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel
                     ex = new BadHttpRequestException("No CR character found in header line.");
                     break;
                 case RequestRejectionReason.TooManyHeaders:
-                    ex = new BadHttpRequestException("Too many headers.");
+                    ex = new BadHttpRequestException("Request contains too many headers.");
                     break;
                 default:
                     ex = new BadHttpRequestException("Bad request.");

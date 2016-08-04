@@ -366,6 +366,72 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
             }
         }
 
+        [Fact]
+        public void ThrowsWhenHeadersExceedTotalSizeLimit()
+        {
+            var trace = new KestrelTrace(new TestKestrelTrace());
+            var ltp = new LoggingThreadPool(trace);
+            using (var pool = new MemoryPool())
+            using (var socketInput = new SocketInput(pool, ltp))
+            {
+                const string headerLine = "Header: value\r\n";
+
+                var options = new KestrelServerOptions();
+                options.Limits.MaxRequestHeaderTotalSize = headerLine.Length - 1;
+
+                var connectionContext = new ConnectionContext()
+                {
+                    DateHeaderValueManager = new DateHeaderValueManager(),
+                    ServerAddress = ServerAddress.FromUrl("http://localhost:5000"),
+                    ServerOptions = options,
+                    Log = trace
+                };
+
+                var frame = new Frame<object>(application: null, context: connectionContext);
+                frame.Reset();
+                frame.InitializeHeaders();
+
+                var headerArray = Encoding.ASCII.GetBytes($"{headerLine}\r\n");
+                socketInput.IncomingData(headerArray, 0, headerArray.Length);
+
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("Request headers too long.", exception.Message);
+            }
+        }
+
+        [Fact]
+        public void ThrowsWhenHeadersExceedCountLimit()
+        {
+            var trace = new KestrelTrace(new TestKestrelTrace());
+            var ltp = new LoggingThreadPool(trace);
+            using (var pool = new MemoryPool())
+            using (var socketInput = new SocketInput(pool, ltp))
+            {
+                const string headerLines = "Header-1: value1\r\nHeader-2: value2\r\n";
+
+                var options = new KestrelServerOptions();
+                options.Limits.MaxRequestHeaders = 1;
+
+                var connectionContext = new ConnectionContext()
+                {
+                    DateHeaderValueManager = new DateHeaderValueManager(),
+                    ServerAddress = ServerAddress.FromUrl("http://localhost:5000"),
+                    ServerOptions = options,
+                    Log = trace
+                };
+
+                var frame = new Frame<object>(application: null, context: connectionContext);
+                frame.Reset();
+                frame.InitializeHeaders();
+
+                var headerArray = Encoding.ASCII.GetBytes($"{headerLines}\r\n");
+                socketInput.IncomingData(headerArray, 0, headerArray.Length);
+
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("Request contains too many headers.", exception.Message);
+            }
+        }
+
         [Theory]
         [InlineData("Cookie: \r\n\r\n", 1)]
         [InlineData("Cookie:\r\n\r\n", 1)]
