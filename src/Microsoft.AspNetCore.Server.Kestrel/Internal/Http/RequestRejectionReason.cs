@@ -31,5 +31,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
         MissingSpaceAfterMethod,
         MissingSpaceAfterTarget,
         MissingCrAfterVersion,
+        HeadersExceedMaxTotalSize,
+        MissingCRInHeaderLine,
+        TooManyHeaders,
     }
 }

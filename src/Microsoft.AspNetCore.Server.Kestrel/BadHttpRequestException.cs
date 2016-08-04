@@ -91,6 +91,15 @@ namespace Microsoft.AspNetCore.Server.Kestrel
                 case RequestRejectionReason.MissingCrAfterVersion:
                     ex = new BadHttpRequestException("Missing CR in request line.");
                     break;
+                case RequestRejectionReason.HeadersExceedMaxTotalSize:
+                    ex = new BadHttpRequestException("Request headers too long.");
+                    break;
+                case RequestRejectionReason.MissingCRInHeaderLine:
+                    ex = new BadHttpRequestException("No CR character found in header line.");
+                    break;
+                case RequestRejectionReason.TooManyHeaders:
+                    ex = new BadHttpRequestException("Too many headers.");
+                    break;
                 default:
                     ex = new BadHttpRequestException("Bad request.");
                     break;
