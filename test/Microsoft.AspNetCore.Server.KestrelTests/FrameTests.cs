@@ -205,7 +205,8 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 var headerArray = Encoding.ASCII.GetBytes(rawHeaders);
                 socketInput.IncomingData(headerArray, 0, headerArray.Length);
 
-                Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("Header value line folding not supported.", exception.Message);
             }
         }
 
@@ -234,7 +235,8 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 var headerArray = Encoding.ASCII.GetBytes(rawHeaders);
                 socketInput.IncomingData(headerArray, 0, headerArray.Length);
 
-                Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("Header line must end in CRLF; only CR found.", exception.Message);
             }
         }
 
@@ -263,7 +265,8 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 var headerArray = Encoding.ASCII.GetBytes(rawHeaders);
                 socketInput.IncomingData(headerArray, 0, headerArray.Length);
 
-                Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("No ':' character found in header line.", exception.Message);
             }
         }
 
@@ -272,8 +275,6 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
         [InlineData("\tHeader: value\r\n\r\n")]
         [InlineData(" Header-1: value1\r\nHeader-2: value2\r\n\r\n")]
         [InlineData("\tHeader-1: value1\r\nHeader-2: value2\r\n\r\n")]
-        [InlineData("Header-1: value1\r\n Header-2: value2\r\n\r\n")]
-        [InlineData("Header-1: value1\r\n\tHeader-2: value2\r\n\r\n")]
         public void ThrowsOnHeaderLineStartingWithWhitespace(string rawHeaders)
         {
             var trace = new KestrelTrace(new TestKestrelTrace());
@@ -295,7 +296,8 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 var headerArray = Encoding.ASCII.GetBytes(rawHeaders);
                 socketInput.IncomingData(headerArray, 0, headerArray.Length);
 
-                Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("Header line must not start with whitespace.", exception.Message);
             }
         }
 
@@ -329,13 +331,15 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 var headerArray = Encoding.ASCII.GetBytes(rawHeaders);
                 socketInput.IncomingData(headerArray, 0, headerArray.Length);
 
-                Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("Whitespace is not allowed in header name.", exception.Message);
             }
         }
 
         [Theory]
+        [InlineData("Header-1: value1\r\nHeader-2: value2\r\n\r\r")]
         [InlineData("Header-1: value1\r\nHeader-2: value2\r\n\r ")]
-        [InlineData("Header-1: value1\r\nHeader-2: value2\r\nEnd\r\n")]
+        [InlineData("Header-1: value1\r\nHeader-2: value2\r\n\r \n")]
         public void ThrowsOnHeadersNotEndingInCRLFLine(string rawHeaders)
         {
             var trace = new KestrelTrace(new TestKestrelTrace());
@@ -357,7 +361,8 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 var headerArray = Encoding.ASCII.GetBytes(rawHeaders);
                 socketInput.IncomingData(headerArray, 0, headerArray.Length);
 
-                Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
+                Assert.Equal("Headers corrupted, invalid header sequence.", exception.Message);
             }
         }
 
