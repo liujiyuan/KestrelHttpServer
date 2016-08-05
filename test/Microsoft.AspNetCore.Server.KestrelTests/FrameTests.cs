@@ -377,7 +377,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 const string headerLine = "Header: value\r\n";
 
                 var options = new KestrelServerOptions();
-                options.Limits.MaxRequestHeaderTotalSize = headerLine.Length - 1;
+                options.Limits.MaxRequestHeadersTotalSize = headerLine.Length - 1;
 
                 var connectionContext = new ConnectionContext()
                 {
@@ -410,7 +410,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 const string headerLines = "Header-1: value1\r\nHeader-2: value2\r\n";
 
                 var options = new KestrelServerOptions();
-                options.Limits.MaxRequestHeaders = 1;
+                options.Limits.MaxRequestHeaderCount = 1;
 
                 var connectionContext = new ConnectionContext()
                 {
@@ -502,8 +502,8 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 const string headerLine2 = "Header-2: value2\r\n";
 
                 var options = new KestrelServerOptions();
-                options.Limits.MaxRequestHeaderTotalSize = headerLine1.Length;
-                options.Limits.MaxRequestHeaders = 1;
+                options.Limits.MaxRequestHeadersTotalSize = headerLine1.Length;
+                options.Limits.MaxRequestHeaderCount = 1;
 
                 var connectionContext = new ConnectionContext()
                 {

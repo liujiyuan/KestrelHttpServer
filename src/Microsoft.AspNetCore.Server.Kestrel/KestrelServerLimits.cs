@@ -16,10 +16,10 @@ namespace Microsoft.AspNetCore.Server.Kestrel
 
         // Matches the default large_client_header_buffers in nginx.
 
-        private int _maxRequestHeaderTotalSize = 32 * 1024;
+        private int _maxRequestHeadersTotalSize = 32 * 1024;
 
         // Matches the default LimitRequestFields in Apache httpd.
-        private int _maxRequestHeaders = 100;
+        private int _maxRequestHeaderCount = 100;
 
         /// <summary>
         /// Gets or sets the maximum size of the request buffer.
@@ -72,11 +72,11 @@ namespace Microsoft.AspNetCore.Server.Kestrel
         /// <remarks>
         /// Defaults to 32,768 bytes (32 KB).
         /// </remarks>
-        public int MaxRequestHeaderTotalSize
+        public int MaxRequestHeadersTotalSize
         {
             get
             {
-                return _maxRequestHeaderTotalSize;
+                return _maxRequestHeadersTotalSize;
             }
             set
             {
@@ -84,7 +84,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "Value must a positive integer.");
                 }
-                _maxRequestHeaderTotalSize = value;
+                _maxRequestHeadersTotalSize = value;
             }
         }
 
@@ -94,11 +94,11 @@ namespace Microsoft.AspNetCore.Server.Kestrel
         /// <remarks>
         /// Defaults to 100.
         /// </remarks>
-        public int MaxRequestHeaders
+        public int MaxRequestHeaderCount
         {
             get
             {
-                return _maxRequestHeaders;
+                return _maxRequestHeaderCount;
             }
             set
             {
@@ -106,7 +106,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel
                 {
                     throw new ArgumentOutOfRangeException(nameof(value), "Value must a positive integer.");
                 }
-                _maxRequestHeaders = value;
+                _maxRequestHeaderCount = value;
             }
         }
     }

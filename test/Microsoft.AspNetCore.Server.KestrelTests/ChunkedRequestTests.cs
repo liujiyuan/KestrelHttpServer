@@ -263,7 +263,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
             const string headerLine = "Header: value";
             const string trailingHeaderLine = "Trailing-Header: trailing-value";
 
-            testContext.ServerOptions.Limits.MaxRequestHeaderTotalSize =
+            testContext.ServerOptions.Limits.MaxRequestHeadersTotalSize =
                 transferEncodingHeaderLine.Length + 2 +
                 headerLine.Length + 2 +
                 trailingHeaderLine.Length + 1;
@@ -306,7 +306,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
             const string headerLine = "Header: value";
             const string trailingHeaderLine = "Trailing-Header: trailing-value";
 
-            testContext.ServerOptions.Limits.MaxRequestHeaders = 2;
+            testContext.ServerOptions.Limits.MaxRequestHeaderCount = 2;
 
             using (var server = new TestServer(async context =>
             {

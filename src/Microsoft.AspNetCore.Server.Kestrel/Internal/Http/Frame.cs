@@ -309,7 +309,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
             _manuallySetRequestAbortToken = null;
             _abortedCts = null;
 
-            _maxRequestHeadersTotalSize = ServerOptions.Limits.MaxRequestHeaderTotalSize;
+            _maxRequestHeadersTotalSize = ServerOptions.Limits.MaxRequestHeadersTotalSize;
             _requestHeadersParsed = 0;
         }
 
@@ -1086,7 +1086,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
 
                     // If we've parsed the max allowed numbers of headers and we're starting a new
                     // one, we've gone over the limit.
-                    if (_requestHeadersParsed == ServerOptions.Limits.MaxRequestHeaders)
+                    if (_requestHeadersParsed == ServerOptions.Limits.MaxRequestHeaderCount)
                     {
                         RejectRequest(RequestRejectionReason.TooManyHeaders);
                     }

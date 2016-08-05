@@ -30,7 +30,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.FunctionalTests
 
             using (var host = BuildWebHost(options =>
             {
-                options.Limits.MaxRequestHeaderTotalSize = headers.Length + extraLimit;
+                options.Limits.MaxRequestHeadersTotalSize = headers.Length + extraLimit;
             }))
             {
                 host.Start();
@@ -58,7 +58,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.FunctionalTests
 
             using (var host = BuildWebHost(options =>
             {
-                options.Limits.MaxRequestHeaders = maxHeaderCount;
+                options.Limits.MaxRequestHeaderCount = maxHeaderCount;
             }))
             {
                 host.Start();
@@ -80,7 +80,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.FunctionalTests
 
             using (var host = BuildWebHost(options =>
             {
-                options.Limits.MaxRequestHeaderTotalSize = headers.Length - 1;
+                options.Limits.MaxRequestHeadersTotalSize = headers.Length - 1;
             }))
             {
                 host.Start();
@@ -103,7 +103,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.FunctionalTests
 
             using (var host = BuildWebHost(options =>
             {
-                options.Limits.MaxRequestHeaders = maxHeaderCount;
+                options.Limits.MaxRequestHeaderCount = maxHeaderCount;
             }))
             {
                 host.Start();

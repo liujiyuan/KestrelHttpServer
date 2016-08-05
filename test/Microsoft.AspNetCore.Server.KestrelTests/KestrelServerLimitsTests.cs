@@ -67,7 +67,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
         [Fact]
         public void MaxRequestHeaderTotalSizeDefault()
         {
-            Assert.Equal(32 * 1024, (new KestrelServerLimits()).MaxRequestHeaderTotalSize);
+            Assert.Equal(32 * 1024, (new KestrelServerLimits()).MaxRequestHeadersTotalSize);
         }
 
         [Theory]
@@ -78,7 +78,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                (new KestrelServerLimits()).MaxRequestHeaderTotalSize = value;
+                (new KestrelServerLimits()).MaxRequestHeadersTotalSize = value;
             });
         }
 
@@ -88,14 +88,14 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
         public void MaxRequestHeaderTotalSizeValid(int value)
         {
             var o = new KestrelServerLimits();
-            o.MaxRequestHeaderTotalSize = value;
-            Assert.Equal(value, o.MaxRequestHeaderTotalSize);
+            o.MaxRequestHeadersTotalSize = value;
+            Assert.Equal(value, o.MaxRequestHeadersTotalSize);
         }
 
         [Fact]
         public void MaxRequestHeadersDefault()
         {
-            Assert.Equal(100, (new KestrelServerLimits()).MaxRequestHeaders);
+            Assert.Equal(100, (new KestrelServerLimits()).MaxRequestHeaderCount);
         }
 
         [Theory]
@@ -106,7 +106,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
         {
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
-                (new KestrelServerLimits()).MaxRequestHeaders = value;
+                (new KestrelServerLimits()).MaxRequestHeaderCount = value;
             });
         }
 
@@ -116,8 +116,8 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
         public void MaxRequestHeadersValid(int value)
         {
             var o = new KestrelServerLimits();
-            o.MaxRequestHeaders = value;
-            Assert.Equal(value, o.MaxRequestHeaders);
+            o.MaxRequestHeaderCount = value;
+            Assert.Equal(value, o.MaxRequestHeaderCount);
         }
     }
 }
