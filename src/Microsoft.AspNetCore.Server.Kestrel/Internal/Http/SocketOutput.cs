@@ -58,6 +58,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
         private readonly Queue<WriteContext> _writeContextPool;
         private readonly WriteReqPool _writeReqPool;
 
+        private int _writeCount;
+
         public SocketOutput(
             KestrelThread thread,
             UvStreamHandle socket,
@@ -196,7 +198,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
                 }
             }
 
-            if (scheduleWrite)
+            if (scheduleWrite && (++_writeCount % 16 == 0))
             {
                 ScheduleWrite();
             }
@@ -392,15 +394,15 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
                 _log.ConnectionError(_connectionId, error);
             }
 
-            if (!_postingWrite && _nextWriteContext != null)
-            {
-                _postingWrite = true;
-                ScheduleWrite();
-            }
-            else
-            {
+            //if (!_postingWrite && _nextWriteContext != null)
+            //{
+            //    _postingWrite = true;
+            //    ScheduleWrite();
+            //}
+            //else
+            //{
                 _ongoingWrites--;
-            }
+            //}
         }
 
         private void CompleteNextWrite(ref int bytesLeftToBuffer)
