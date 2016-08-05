@@ -190,7 +190,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
                     }
                 }
 
-                if (!_postingWrite && _ongoingWrites < _maxPendingWrites)
+                if ((++_writeCount % 16 == 1) && !_postingWrite && _ongoingWrites < _maxPendingWrites)
                 {
                     _postingWrite = true;
                     _ongoingWrites++;
@@ -198,7 +198,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
                 }
             }
 
-            if (scheduleWrite && (++_writeCount % 16 == 0))
+            if (scheduleWrite)
             {
                 ScheduleWrite();
             }
