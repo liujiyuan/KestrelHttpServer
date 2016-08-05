@@ -1148,7 +1148,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
 
                     if (ch != '\n')
                     {
-                        RejectRequest(RequestRejectionReason.HeaderLineMustEndInCRLFOnlyCRFound);
+                        RejectRequest(RequestRejectionReason.HeaderLineMustEndInCRLF);
                     }
 
                     var next = scan.Peek();

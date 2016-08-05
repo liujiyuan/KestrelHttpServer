@@ -236,7 +236,7 @@ namespace Microsoft.AspNetCore.Server.KestrelTests
                 socketInput.IncomingData(headerArray, 0, headerArray.Length);
 
                 var exception = Assert.Throws<BadHttpRequestException>(() => frame.TakeMessageHeaders(socketInput, (FrameRequestHeaders)frame.RequestHeaders));
-                Assert.Equal("Header line must end in CRLF; only CR found.", exception.Message);
+                Assert.Equal("Header line must end in CRLF.", exception.Message);
             }
         }
 

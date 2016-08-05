@@ -15,7 +15,7 @@ namespace Microsoft.AspNetCore.Server.Kestrel.Internal.Http
         HeaderLineMustNotStartWithWhitespace,
         NoColonCharacterFoundInHeaderLine,
         WhitespaceIsNotAllowedInHeaderName,
-        HeaderLineMustEndInCRLFOnlyCRFound,
+        HeaderLineMustEndInCRLF,
         HeaderValueLineFoldingNotSupported,
         MalformedRequestLineStatus,
         MalformedRequestInvalidHeaders,

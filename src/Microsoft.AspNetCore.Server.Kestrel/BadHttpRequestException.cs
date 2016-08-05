@@ -49,8 +49,8 @@ namespace Microsoft.AspNetCore.Server.Kestrel
                 case RequestRejectionReason.WhitespaceIsNotAllowedInHeaderName:
                     ex = new BadHttpRequestException("Whitespace is not allowed in header name.");
                     break;
-                case RequestRejectionReason.HeaderLineMustEndInCRLFOnlyCRFound:
-                    ex = new BadHttpRequestException("Header line must end in CRLF; only CR found.");
+                case RequestRejectionReason.HeaderLineMustEndInCRLF:
+                    ex = new BadHttpRequestException("Header line must end in CRLF.");
                     break;
                 case RequestRejectionReason.HeaderValueLineFoldingNotSupported:
                     ex = new BadHttpRequestException("Header value line folding not supported.");
